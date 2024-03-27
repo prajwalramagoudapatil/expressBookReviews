@@ -4,7 +4,7 @@ let books = require("./booksdb.js");
 const regd_users = express.Router();
 
 let users = [];
-let reviews = [];
+
 
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
@@ -44,18 +44,22 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  reviews.forEach( (review, idx) => {
-    if(review.username === req.session.user && review.isbn === req.params.isbn) {
-        reviews.splice(idx, 1);
-    }
-  });
-  let newReview = {
-    isbn: req.params.isbn,
-    comment: req.query.review,
-    username: req.sesion.user,
-  };
-  reviews.push(newReview);
-  return res.status(200).send(reviews);
+  // books[3].reviews[3001] = "masta";
+
+  books[req. ].reviews[req.session.user] = req.
+  
+  // reviews.forEach( (review, idx) => {
+  //   if(review.username === req.session.user && review.isbn === req.params.isbn) {
+  //       reviews.splice(idx, 1);
+  //   }
+  // });
+  // let newReview = {
+  //   isbn: req.params.isbn,
+  //   comment: req.query.review,
+  //   username: req.sesion.user,
+  // };
+  // reviews.push(newReview);
+  // return res.status(200).send(reviews);
 });
 
 module.exports.authenticated = regd_users;
