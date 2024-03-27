@@ -49,12 +49,13 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         reviews.splice(idx, 1);
     }
   });
-  newReview = {
+  let newReview = {
     isbn: req.params.isbn,
     comment: req.query.review,
     username: req.sesion.user,
   };
-  return res.status(300).json({message: "Yet to be implemented"});
+  reviews.push(newReview);
+  return res.status(200).send(reviews);
 });
 
 module.exports.authenticated = regd_users;
