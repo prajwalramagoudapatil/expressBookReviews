@@ -46,7 +46,10 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
   // books[3].reviews[3001] = "masta";
 
-  books[req. ].reviews[req.session.user] = req.
+  console.log(req.session.user);
+  books[req.params.isbn ].reviews[req.session.user] = req.query.review ;
+  console.log(books[req.params.isbn ].reviews[req.session.user]);
+  res.status(200).json({message:" Review added"});
   
   // reviews.forEach( (review, idx) => {
   //   if(review.username === req.session.user && review.isbn === req.params.isbn) {
