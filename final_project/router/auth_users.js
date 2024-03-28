@@ -16,8 +16,10 @@ const isValid = (username)=>{ //returns boolean
 
 const authenticatedUser = (username,password)=>{ //returns boolean
 //write code to check if username and password match the one we have in records.
+  let user;
   for( user in users ) {
-    if( user.name === username && user.password == password )
+    console.log( users[user].name , username , users[user].password.toString() , (password));
+    if( users[user].name === username && (users[user].password).toString() === (password) )
       return true;
   }
   return false;
@@ -26,15 +28,17 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 //only registered users can login
 regd_users.post("/login", (req,res) => {
   //Write your code here
-  let username = res.query.username;
+  let username = req.query.username;
   let password = req.query.password;
-
+//   console.log( "user details:", username , password);
   if(!username || !password) 
     res.status(404).send("Error in login");
+//   console.log( "users[]: " , users);
   if( authenticatedUser(username, password) ) {
-    let accessToken = jwt.sign( { data: password } , "access" );
+    let accessToken = jwt.sign( { data: password } , "access", { expiresIn: 60 *60 });
     req.session.authorization = {
-      accessToken, username 
+      "accessToken": accessToken,
+      "username": username 
     };
     return res.status(200).send("User successfully logged in");
   } else 
@@ -45,10 +49,12 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
   // books[3].reviews[3001] = "masta";
+  let username = req.session.authorization["username"];
 
-  console.log(req.session.user);
-  books[req.params.isbn ].reviews[req.session.user] = req.query.review ;
-  console.log(books[req.params.isbn ].reviews[req.session.user]);
+  console.log( "user: ", req.user);
+  console.log( "username: " , username );
+  books[req.params.isbn ].reviews[username] = req.query.review ;
+  console.log(books[req.params.isbn ].reviews[username]);
   res.status(200).json({message:" Review added"});
   
   // reviews.forEach( (review, idx) => {
@@ -63,6 +69,12 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   // };
   // reviews.push(newReview);
   // return res.status(200).send(reviews);
+});
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    let username = req.session.authorization["username"];
+    delete books[req.params.isbn ].reviews[username];
+    res.status(200).json({message: "Review is removed"});
 });
 
 module.exports.authenticated = regd_users;
