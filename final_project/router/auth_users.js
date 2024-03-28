@@ -32,7 +32,7 @@ regd_users.post("/login", (req,res) => {
   if(!username || !password) 
     res.status(404).send("Error in login");
   if( authenticatedUser(username, password) ) {
-    let accessToken = jwt.sign( { data: password } , "access", { expiresIn: 60 *60 });
+    let accessToken = jwt.sign( { data: password } , "access" );
     req.session.authorization = {
       accessToken, username 
     };
